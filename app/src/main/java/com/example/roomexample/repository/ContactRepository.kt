@@ -14,11 +14,7 @@ import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 
 class ContactRepository(private val application: Application) {
-    private val db: ContactDatabase = Room.databaseBuilder(
-        application.applicationContext,
-        ContactDatabase::class.java,
-        "contactDB"
-    ).build()
+    private val db: ContactDatabase = ContactDatabase.getInstance(application)
 
     private val dispose = CompositeDisposable()
     private val listContact = MutableLiveData<List<Contact>>()
