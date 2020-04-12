@@ -1,5 +1,6 @@
 package com.example.roomexample
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -9,9 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
 import com.example.roomexample.adapter.ContactAdapter
+import com.example.roomexample.dagger.DaggerApplicationComponent
 import com.example.roomexample.db.ContactDatabase
 import com.example.roomexample.db.entity.Contact
 import com.example.roomexample.repository.viewmodel.ContactViewModel
+import com.example.roomexample.repository.viewmodel.ContactViewModelFactory
 import io.reactivex.*
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -23,9 +26,17 @@ import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.Observer
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
+
+
+
+    @Inject
+    lateinit var contactViewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var viewModel: ContactViewModel
 
     private lateinit var contactAdapter : ContactAdapter
 
@@ -43,9 +54,11 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        contactViewModel = ViewModelProvider(this).get(ContactViewModel::class.java)
 
-
+//
+//        DaggerMainActit.builder().build().inject(this)
+        App.app.getApplicationComponent().inject(this)
+        contactViewModel = ViewModelProvider(this,contactViewModelFactory).get(ContactViewModel::class.java)
         contactAdapter = ContactAdapter(listContact,contactViewModel)
         layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager

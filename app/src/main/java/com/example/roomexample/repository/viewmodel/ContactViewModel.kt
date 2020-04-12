@@ -4,14 +4,17 @@ import android.app.Application
 import androidx.annotation.NonNull
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.example.roomexample.db.entity.Contact
 import com.example.roomexample.repository.ContactRepository
+import javax.inject.Inject
 
-class ContactViewModel(@NonNull application: Application) : AndroidViewModel(application){
+class ContactViewModel @Inject constructor(val contactRepository: ContactRepository) : ViewModel() {
 
 
 
-    private val  contactRepository = ContactRepository(application)
+
+
 
 
     fun getAllContact() : LiveData<List<Contact>> {

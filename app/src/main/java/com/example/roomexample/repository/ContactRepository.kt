@@ -12,12 +12,11 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class ContactRepository(private val application: Application) {
-    private val db: ContactDatabase = ContactDatabase.getInstance(application)
-
-    private val dispose = CompositeDisposable()
-    private val listContact = MutableLiveData<List<Contact>>()
+class ContactRepository @Inject constructor(val db: ContactDatabase) {
+    private val dispose: CompositeDisposable = CompositeDisposable()
+    private val listContact : MutableLiveData<List<Contact>> = MutableLiveData()
 
     init {
         getAllContact()
@@ -32,19 +31,19 @@ class ContactRepository(private val application: Application) {
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribeWith(
             object : DisposableCompletableObserver() {
                 override fun onComplete() {
-                    Toast.makeText(
-                        application.applicationContext,
-                        "Success create contact",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        application.applicationContext,
+//                        "Success create contact",
+////                        Toast.LENGTH_SHORT
+//                    ).show()
                 }
 
                 override fun onError(e: Throwable) {
-                    Toast.makeText(
-                        application.applicationContext,
-                        "Failed create contact",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        application.applicationContext,
+//                        "Failed create contact",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
                 }
 
             }))
@@ -61,19 +60,19 @@ class ContactRepository(private val application: Application) {
         }.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io()).subscribeWith(
             object : DisposableCompletableObserver() {
                 override fun onComplete() {
-                    Toast.makeText(
-                        application.applicationContext,
-                        "Success Delete Contact",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        application.applicationContext,
+//                        "Success Delete Contact",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
                 }
 
                 override fun onError(e: Throwable) {
-                    Toast.makeText(
-                        application.applicationContext,
-                        "Failed Delete Contact",
-                        Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        application.applicationContext,
+//                        "Failed Delete Contact",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
                 }
 
             }))
@@ -87,7 +86,7 @@ class ContactRepository(private val application: Application) {
                 listContact.postValue(it)
 
                 Consumer<Throwable> {
-                    Toast.makeText(application.applicationContext,it.message,Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(application.applicationContext,it.message,Toast.LENGTH_SHORT).show()
                 }
             })
     }
